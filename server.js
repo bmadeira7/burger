@@ -22,7 +22,7 @@ var connection = mysql.createConnection({
   port: 8889,
   user: "root",
   password: "root",
-  database: "day_planner_db"
+  database: "burgers_db"
 });
 
 connection.connect(function(err) {
@@ -31,11 +31,46 @@ connection.connect(function(err) {
     return;
   }
 
-  console.log("connected as id " + connection.threadId);
+  console.log("connected to mysql as: id " + connection.threadId);
 });
 
 
-
+// Use Handlebars to render the main index.html page with the todos in it.
+app.get("/", function(req, res) {
+    connection.query("SELECT * FROM burgers;", function(err, data) {
+      if (err) {
+        return res.status(500).end();
+      }
+  
+      res.render("index", { burgers: data });
+    });
+  });
+  // Create a new todo
+  app.post('/todos', function(req, res){
+    connection.query("INSERT INTO burgers (burger_name) VALUES (?)", [req.body.plan], function(err, result){
+      if(err){
+        return res.status(500).end();
+      } 
+      res.json({id: result.insertId})
+      console.log({id: result.insertId})
+  
+    })
+  })
+  
+// Delete 
+  app.delete('/todos/:id', function(req, res){
+    connection.query("DELETE FROM burgers WHERE id =?", [req.params.id], function(err, result){
+        console.log(req.params.id)
+       if(err){
+         return res.status(500).end();
+       }
+       else if(result.affectedRows === 0){
+         return res.status(404).end();
+       }
+       res.status(200).end();
+    })
+  })
+  
 
 
 

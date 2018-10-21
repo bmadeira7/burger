@@ -61,14 +61,15 @@ app.get("/", function (req, res) {
             }
         }
         console.log("eatenBurg: " + eatenBurger)
-        // 3. Send all the animals that are not pets to the index.handlebars file.
+      
         res.render("index", { burgers: eatenBurger });
 
     });
 })
-// Update a todo
-app.put('/todos/:id', function(req, res){
-    connection.query("UPDATE burgers SET devoured = ? WHERE id =?", [req.body.devoured ,req.params.id], function(err, result){
+// Update a burger
+app.put('/burgers/:id', function(req, res){
+    console.log("HEYHEYHEYHEYHEY")
+    connection.query("UPDATE burgers SET ? WHERE id=?", [{devoured: true}, req.params.id], function(err, result){
       if(err){
         return res.status(500).end();
       }
@@ -80,7 +81,7 @@ app.put('/todos/:id', function(req, res){
   })
     // Create a new burger
     app.post('/burgers', function (req, res) {
-        connection.query("INSERT INTO burgers (burger_name) VALUES (?)", [req.body.plan], function (err, result) {
+        connection.query("INSERT INTO burgers (burger_name) VALUES (?)", [req.body.burger], function (err, result) {
             if (err) {
                 return res.status(500).end();
             }

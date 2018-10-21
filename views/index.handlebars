@@ -8,50 +8,61 @@
     
 </style>
 
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 text-center" id="burgerCol1">
+            <h1>Bob's Burgers</h1>
+        </div>
+        <div class="col-xs-6 text-center" class="burgerDisplay">
+            <div clas="row">
 
-<h1>Bob's Burgers</h1>
+                {{#each burgers}}
+                {{#unless devoured}}
 
-<ul>
-    {{#each burgers}}
-    <li>
-        <p>
-            {{this.id}}. {{this.burger_name}}
+                <p>
+                    {{this.id}}. {{this.burger_name}}
 
-            <button data-planid="{{this.id}}" class="delBurger">Delete Burger!</button>
-        </p>
-    </li>
-    {{/each}}
-</ul>
-<h1>Burgers that you already ate</h1>
+                    <button type="submit" data-burgerid="{{this.id}}" class="eatBurger">Devour Burger!</button>
+                    <button data-burgerid="{{this.id}}" class="delBurger">Delete Burger!</button>
+                </p>
 
-<ul>
-    {{#each burgers}}
-    {{#if this.devoured}}
-    <li class='eatenBurger'>
-        {{this.id}}
-            {{this.burger_name}}
-       
-            <button data-planid="{{this.id}}" class="eatBurger">Devour Burger!</button>
-    </li>
-    {{/if}}
-    {{/each}}
-</ul>
+                {{/unless}}
+                {{/each}}
+
+                <h1>Burgers that you already ate</h1>
 
 
+                {{#each burgers}}
+                {{#if this.devoured}}
+                <p class='eatenBurger'>
+                    {{this.id}}
+                    {{this.burger_name}}
+
+
+                    <button data-burgerid="{{this.id}}" class="delBurger">Delete Burger!</button>
+                </p>
+                {{/if}}
+                {{/each}}
+
+            </div>
+            <h2>Add a Burger</h2>
+            <form id="createBurger" class="button-size">
+                <textarea type="text" name="burger"></textarea>
+
+                <button type="submit" class="btn btn-danger">ADD BURGER</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 
-<h2>Add a Burger</h2>
-<form id="createBurger" class="button-size">
-    <textarea type="text" name="burger"></textarea>
-    <button type="submit">add burger</button>
-</form>
 
 
 {{!-- this part will delete the burger --}}
 <script type="text/javascript">
     $(".delBurger").on("click", function (event) {
-        var id = $(this).data("planid")
+        var id = $(this).data("burgerid")
 
 
         $.ajax("/burgers/" + id, {
@@ -68,7 +79,7 @@
     $('#createBurger').on("submit", function (event) {
         event.preventDefault();
         var newBurger = {
-            plan: $("#createBurger [name=burger]").val().trim()
+            burger: $("#createBurger [name=burger]").val().trim()
 
         }
         $.ajax("/burgers", {
@@ -81,14 +92,16 @@
             }
         )
     })
-//update the burger devour boolean
+    //update the burger devour boolean
     $('.eatBurger').on('click', function (event) {
-        event.preventDefault();
-        var id = $("[name=id]").val().trim()
+        console.log("button click for DEVOUR")
 
+        var id = $(this).data("burgerid")
+        console.log("var id is: " + id)
         var updatedBurger = {
-            burgers: $(".eatenBurger [name=plan]").val().trim()
+            burger: $(".eatenBurger [name=burger]").val()
         }
+        console.log("var updatedBurger is: " + updatedBurger)
         $.ajax('/burgers/' + id, {
             type: 'PUT',
             data: updatedBurger

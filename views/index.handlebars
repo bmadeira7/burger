@@ -5,17 +5,22 @@
         font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
        
     }
-    
+    .heading{
+        padding-top: 40px;
+    }
+    .btn777{
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
 </style>
 
 <div class="container">
     <div class="row">
+            <h1 class="uk-animation-kenburns heading"><strong>I Love Burgers!</strong></h1>
         <div class="col-xs-12 text-center" id="burgerCol1">
-            <h1>Bob's Burgers</h1>
         </div>
-        <div class="col-xs-6 text-center" class="burgerDisplay">
-            <div clas="row">
-
+        <div class="col-xs-6 text-center burgerDisplay uk-animation-scale-up">
+            
+<h1>Burger Menu</h1>
                 {{#each burgers}}
                 {{#unless devoured}}
 
@@ -23,7 +28,7 @@
                     {{this.id}}. {{this.burger_name}}
 
                     <button type="submit" data-burgerid="{{this.id}}" class="eatBurger">Devour Burger!</button>
-                    <button data-burgerid="{{this.id}}" class="delBurger">Delete Burger!</button>
+                    
                 </p>
 
                 {{/unless}}
@@ -44,12 +49,12 @@
                 {{/if}}
                 {{/each}}
 
-            </div>
+            
             <h2>Add a Burger</h2>
             <form id="createBurger" class="button-size">
                 <textarea type="text" name="burger"></textarea>
 
-                <button type="submit" class="btn btn-danger">ADD BURGER</button>
+                <button type="submit" class="btn btn-danger btn777">ADD BURGER</button>
             </form>
         </div>
     </div>
